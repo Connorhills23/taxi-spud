@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpudWanker Taxis</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #111;
+        color: #fff;
+      }
+      header {
+        background: #222;
+        padding: 20px;
+        text-align: center;
+      }
+      header h1 {
+        margin: 0;
+        color: #f4c542;
+      }
+      nav {
+        text-align: center;
+        padding: 10px;
+        background: #333;
+      }
+      nav a {
+        color: #fff;
+        margin: 0 15px;
+        text-decoration: none;
+      }
+      .hero {
+        padding: 60px 20px;
+        text-align: center;
+        background: url("https://images.unsplash.com/photo-1519003722824-194d4455a60c")
+          center/cover;
+      }
+      .hero h2 {
+        font-size: 2.5em;
+      }
+      .btn {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 12px 24px;
+        background: #f4c542;
+        color: #000;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: bold;
+      }
+      .section {
+        padding: 40px 20px;
+        text-align: center;
+      }
+      form {
+        max-width: 500px;
+        margin: 0 auto;
+        text-align: left;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 6px;
+      }
+      button {
+        background: #f4c542;
+        border: none;
+        padding: 12px;
+        width: 100%;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      #priceEstimate {
+        margin-top: 10px;
+        font-weight: bold;
+        color: #f4c542;
+      }
+      footer {
+        background: #222;
+        padding: 20px;
+        text-align: center;
+        font-size: 0.9em;
+        color: #aaa;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>SpudWanker Taxis</h1>
+      <p>Fast • Reliable • No Nonsense Rides</p>
+    </header>
+
+    <nav>
+      <a href="#">Home</a>
+      <a href="#services">Services</a>
+      <a href="#booking">Book</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <section class="hero">
+      <h2>Your Ride, Anytime</h2>
+      <p>Serving the local area 24/7 with quick pickups and fair prices.</p>
+      <a href="#booking" class="btn">Book Now</a>
+    </section>
+
+    <section id="services" class="section">
+      <h2>Our Services</h2>
+      <p>Airport transfers, local trips, late-night rides, and more.</p>
+    </section>
+
+    <section id="booking" class="section">
+      <h2>Book a Ride</h2>
+      <form onsubmit="handleBooking(event)">
+        <input type="text" placeholder="Your Name" required />
+        <input type="tel" placeholder="Phone Number" required />
+
+        <select id="pickup" onchange="calculatePrice()" required>
+          <option value="">Pickup Zone</option>
+          <option value="town">Town Centre</option>
+          <option value="airport">Airport</option>
+          <option value="station">Train Station</option>
+          <option value="seafront">Seafront</option>
+          <option value="seafront">work</option>
+          <option value="seafront">home</option>
+        </select>
+
+        <select id="dropoff" onchange="calculatePrice()" required>
+          <option value="">Drop-off Zone</option>
+          <option value="town">Town Centre</option>
+          <option value="airport">Airport</option>
+          <option value="station">Train Station</option>
+          <option value="seafront">Seafront</option>
+          <option value="seafront">work</option>
+          <option value="seafront">home</option>
+        </select>
+
+        <input type="datetime-local" required />
+
+        <select required>
+          <option value="">Passengers</option>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4+</option>
+        </select>
+
+        <textarea placeholder="Additional Notes"></textarea>
+
+        <div id="priceEstimate">Estimated Fare: £--</div>
+
+        <button type="submit">Submit Booking</button>
+      </form>
+      <p id="confirmation" style="display: none; margin-top: 15px">
+        Booking request sent! We'll contact you shortly.
+      </p>
+    </section>
+
+    <section id="contact" class="section">
+      <h2>Contact Us</h2>
+      <p>Call: 01234 567890</p>
+      <p>Email: bookings@spudwanker-taxis.co.uk</p>
+    </section>
+
+    <footer>
+      <p>© 2026 SpudWanker Taxis. All rights reserved.</p>
+    </footer>
+
+    <script>
+      function handleBooking(e) {
+        e.preventDefault();
+        document.getElementById("confirmation").style.display = "block";
+        e.target.reset();
+        document.getElementById("priceEstimate").innerText =
+          "Estimated Fare: £--";
+      }
+
+      function calculatePrice() {
+        const pickup = document.getElementById("pickup").value;
+        const dropoff = document.getElementById("dropoff").value;
+
+        const prices = {
+          town: { airport: 25, station: 8, seafront: 6 },
+          airport: { town: 25, station: 30, seafront: 28 },
+          station: { town: 8, airport: 30, seafront: 7 },
+          seafront: { town: 6, airport: 28, station: 7 },
+          home: { work: 7 },
+          work: { home: 7 },
+        };
+
+        if (pickup && dropoff && pickup !== dropoff) {
+          const price = prices[pickup]?.[dropoff];
+          if (price) {
+            document.getElementById("priceEstimate").innerText =
+              `Estimated Fare: £${price}`;
+          } else {
+            document.getElementById("priceEstimate").innerText =
+              "Price not set";
+          }
+        } else if (pickup === dropoff && pickup !== "") {
+          document.getElementById("priceEstimate").innerText =
+            "Estimated Fare: £5 (minimum fare)";
+        } else {
+          document.getElementById("priceEstimate").innerText =
+            "Estimated Fare: £--";
+        }
+      }
+    </script>
+  </body>
+</html>
